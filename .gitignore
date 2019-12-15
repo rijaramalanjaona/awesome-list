@@ -44,3 +44,6 @@ testem.log
 # System Files
 .DS_Store
 Thumbs.db
+
+# ne pas publier les cles de firebase en ligne
+/src/environments/**
