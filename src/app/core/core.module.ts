@@ -4,18 +4,19 @@ import { PublicModule } from '../public/public.module';
 import { ProtectedModule } from '../protected/protected.module';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { NavbarComponent } from './components/navbar/navbar.component';
+import { FooterComponent } from './components/footer/footer.component';
 
 
 
 @NgModule({
-	declarations: [NavbarComponent],
+	declarations: [NavbarComponent, FooterComponent],
 	imports: [
 		CommonModule,
 		PublicModule,
 		ProtectedModule,
 		BrowserAnimationsModule
 	],
-	exports: [NavbarComponent]
+	exports: [NavbarComponent, FooterComponent]
 })
 export class CoreModule {
 	/**
