@@ -1,4 +1,4 @@
-import {Component, Input, OnChanges, SimpleChange} from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, Output, SimpleChange} from '@angular/core';
 
 @Component({
 	selector: 'al-planning-workday-item',
@@ -9,6 +9,9 @@ export class PlanningWorkdayItemComponent implements OnChanges {
 	@Input() dueDate: string;
 	@Input() doneTasks: number | string;
 	@Input() remainingTasks: number | string;
+
+	@Output()
+	workdayRemoved = new EventEmitter<string>();
 
 	/**
 	 * Cette méthode prend en paramètre toutes les modifications apportées sur les propriétés d’entrée du composant.
@@ -48,5 +51,9 @@ export class PlanningWorkdayItemComponent implements OnChanges {
 				break;
 			}
 		}
+	}
+
+	removeWorkday(dueDate: string) {
+		this.workdayRemoved.emit(dueDate);
 	}
 }
