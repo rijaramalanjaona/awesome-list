@@ -1,35 +1,52 @@
-import {Component, Input } from '@angular/core';
+import {Component, Input, OnChanges, SimpleChange} from '@angular/core';
 
 @Component({
 	selector: 'al-planning-workday-item',
 	templateUrl: './planning-workday-item.component.html',
 	styles: []
 })
-export class PlanningWorkdayItemComponent {
-	private currentWorkday; // nom interne utilisé dans le composant
+export class PlanningWorkdayItemComponent implements OnChanges {
+	@Input() dueDate: string;
+	@Input() doneTasks: number | string;
+	@Input() remainingTasks: number | string;
 
 	/**
-	 * le nom de la propriété d’entrée appelé par le composant parent sera le nom du setter, qui est workday.
-	 * Cette méthode prend en paramètre un workday.
-	 * Toutes les valeurs qui arriveront en entrée de ce composant seront envoyées en paramètre du setter,
-	 * et vous pouvez ensuite effectuer un traitement spécifique pour chacune de ses données.
+	 * Cette méthode prend en paramètre toutes les modifications apportées sur les propriétés d’entrée du composant.
+	 * Ces modifications sont passées dans le paramètre changes.
+	 * Ce paramètre est un tableau d’objet de type SimpleChange, qui est un objet propre à Angular,
+	 * et qui permet de modéliser les modifications apportées aux propriétés d’entrées du composant.
 	 *
 	 */
-	@Input()
-	set workday(workday) {
-		this.currentWorkday = workday || {}; // if workday == null => currentWorkday = {}
-
-		// traitement spécifique d'affichage
-		if ('Lundi' === workday.dueDate) {
-			this.currentWorkday.dueDate += ' (Aujourd\'hui)';
+	ngOnChanges(changes: {[propKey: string]: SimpleChange}) {
+		// tslint:disable-next-line:forin
+		for (const propName in changes) {
+			this.update(propName, changes[propName].currentValue);
 		}
 	}
 
-	/**
-	 * Pour masquer le nom de la propriété intermédiaire currentWorkday dans le template
-	 * Permet d'utiliser le même nom de propriété entre le composant parent et fils
-	 */
-	get workday() {
-		return this.currentWorkday;
+	update(propName, propValue) {
+		switch (propName) {
+			case 'dueDate': {
+				if ('Lundi' === propValue) {
+					this.dueDate += ' (Aujourd\'hui)';
+				}
+				break;
+			}
+			case 'doneTasks': {
+				if (0 === propValue) {
+					this.doneTasks = 'Aucune tâche terminée.';
+				}
+				break;
+			}
+			case 'remainingTasks': {
+				if (0 === propValue) {
+					this.remainingTasks = 'Journée de travail terminée !';
+				}
+				break;
+			}
+			default: {
+				break;
+			}
+		}
 	}
 }
