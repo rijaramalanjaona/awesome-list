@@ -19,7 +19,10 @@ const routes: Routes = [
 				path: 'parameters',
 				loadChildren: () => import('./parameters/parameters.module').then(m => m.ParametersModule)
 			},
-			{ path: 'planning', component: PlanningComponent },
+			{
+				path: 'planning',
+				loadChildren: () => import('./planning/planning.module').then(m => m.PlanningModule)
+			},
 			{ path: 'profil', component: ProfilComponent },
 			{ path: 'workday', component: WorkdayComponent }
 		]
