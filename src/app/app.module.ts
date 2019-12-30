@@ -11,8 +11,8 @@ import { CoreModule } from './core/core.module';
 	],
 	imports: [
 		BrowserModule,
-		AppRoutingModule,
-		CoreModule
+		CoreModule, // on importe les "vraies" routes
+		AppRoutingModule // la route générique en dernier
 	],
 	providers: [],
 	bootstrap: [AppComponent]
