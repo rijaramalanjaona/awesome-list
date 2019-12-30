@@ -13,7 +13,10 @@ const routes: Routes = [
 		path: 'app',
 		component: ProtectedComponent, // le composant de structure
 		children: [
-			{ path: 'dashboard', component: DashboardComponent },
+			{
+				path: 'dashboard',
+				loadChildren: () => import('./dashboard/dashboard.module').then(m => m.DashboardModule)
+			},
 			{ path: 'parameters', component: ParametersComponent },
 			{ path: 'planning', component: PlanningComponent },
 			{ path: 'profil', component: ProfilComponent },
