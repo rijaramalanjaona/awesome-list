@@ -1,10 +1,11 @@
 import { NgModule } from '@angular/core';
 import {SharedModule} from '../../shared/shared.module';
+import { ParametersComponent } from './parameters/parameters.component';
 
 
 
 @NgModule({
-	declarations: [],
+	declarations: [ParametersComponent],
 	imports: [
 		SharedModule
 	]
