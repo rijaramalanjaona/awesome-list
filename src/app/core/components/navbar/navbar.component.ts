@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import {Router} from '@angular/router';
 
 @Component({
@@ -6,15 +6,12 @@ import {Router} from '@angular/router';
 	templateUrl: './navbar.component.html',
 	styleUrls: ['./navbar.component.scss']
 })
-export class NavbarComponent implements OnInit {
+export class NavbarComponent {
 	public homePath = 'home';
 	public loginPath = 'login';
 	public registerPath = 'register';
 
 	constructor(private router: Router) { }
-
-	ngOnInit() {
-	}
 
 	public isActive(page: string): boolean {
 		return this.router.isActive(page, true);

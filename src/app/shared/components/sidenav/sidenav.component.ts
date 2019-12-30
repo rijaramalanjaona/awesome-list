@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import {Router} from '@angular/router';
 
 @Component({
@@ -6,7 +6,7 @@ import {Router} from '@angular/router';
 	templateUrl: './sidenav.component.html',
 	styleUrls: ['./sidenav.component.scss']
 })
-export class SidenavComponent implements OnInit {
+export class SidenavComponent {
 	public prefix = 'app';
 	public dashboardPath = `${this.prefix}/dashboard`;
 	public parametersPath = `${this.prefix}/parameters`;
@@ -15,9 +15,6 @@ export class SidenavComponent implements OnInit {
 	public workdayPath = `${this.prefix}/workday`;
 
 	constructor(private router: Router) { }
-
-	ngOnInit() {
-	}
 
 	public navigate(page: string): void {
 		this.router.navigate([page]);
