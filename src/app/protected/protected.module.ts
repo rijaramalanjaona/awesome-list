@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 
 import { ProtectedRoutingModule } from './protected-routing.module';
-import { ProfilModule } from './profil/profil.module';
 import { WorkdayModule } from './workday/workday.module';
 import {SharedModule} from '../shared/shared.module';
 import { ProtectedComponent } from './protected.component';
@@ -12,7 +11,6 @@ import { ProtectedComponent } from './protected.component';
 	imports: [
 		SharedModule,
 		ProtectedRoutingModule,
-		ProfilModule,
 		WorkdayModule
 	]
 })
