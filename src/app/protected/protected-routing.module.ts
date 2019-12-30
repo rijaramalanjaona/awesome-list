@@ -5,11 +5,13 @@ import {DashboardComponent} from './dashboard/dashboard/dashboard.component';
 import {ParametersComponent} from './parameters/parameters/parameters.component';
 import {ProfilComponent} from './profil/profil/profil.component';
 import {WorkdayComponent} from './workday/workday/workday.component';
+import {ProtectedComponent} from './protected.component';
 
 
 const routes: Routes = [
 	{
 		path: 'app',
+		component: ProtectedComponent, // le composant de structure
 		children: [
 			{ path: 'dashboard', component: DashboardComponent },
 			{ path: 'parameters', component: ParametersComponent },
