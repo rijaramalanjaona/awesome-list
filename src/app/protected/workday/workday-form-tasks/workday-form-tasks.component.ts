@@ -20,17 +20,17 @@ export class WorkdayFormTasksComponent implements OnInit {
 
 	createTaskForm(): FormGroup {
 		return this.fb.group({
-			'title': ['', [
+			title: ['', [
 				Validators.required,
 				Validators.minLength(1),
 				Validators.maxLength(150)
 			]],
-			'todo': [1, [
+			todo: [1, [
 				Validators.required,
 				Validators.min(1),
 				Validators.max(5)
 			]],
-			'done': 0
+			done: 0
 		});
 	}
 	/**
