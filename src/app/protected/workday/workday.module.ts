@@ -8,8 +8,9 @@ import { WorkdayFormTasksComponent } from './workday-form-tasks/workday-form-tas
 import { WorkdayFormTasksAddComponent } from './workday-form-tasks-add/workday-form-tasks-add.component';
 import { WorkdayFormTasksNotesComponent } from './workday-form-tasks-notes/workday-form-tasks-notes.component';
 import { WorkdayFormTasksItemComponent } from './workday-form-tasks-item/workday-form-tasks-item.component';
+import {defineLocale, frLocale} from 'ngx-bootstrap';
 
-
+defineLocale('fr', frLocale);
 
 @NgModule({
 	declarations: [
