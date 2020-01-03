@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {FormArray, FormBuilder, FormGroup} from '@angular/forms';
+import {FormArray, FormBuilder, FormGroup, Validators} from '@angular/forms';
 
 @Component({
 	selector: 'al-workday-form',
@@ -21,13 +21,20 @@ export class WorkdayFormComponent implements OnInit {
 
 	createWorkDayForm(): FormGroup {
 		return this.fb.group({
-			dueDate: '',
+			dueDate: ['', [
+				Validators.required
+			]],
 			/**
 			 * FormArray permet de regrouper des champs de formulaire sans déterminer à l’avance combien de champs vous attendez en entrée.
 			 * Au contraire, avec un FormGroup, vous devez déclarer chaque champ attendu.
 			 */
-			tasks: this.fb.array([]),
-			notes: ''
+			tasks: this.fb.array([], [
+				Validators.required,
+				Validators.maxLength(6)
+			]),
+			notes: ['', [
+				Validators.maxLength(1000)
+			]]
 		});
 	}
 
