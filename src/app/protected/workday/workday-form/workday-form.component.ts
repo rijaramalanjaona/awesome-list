@@ -13,12 +13,6 @@ export class WorkdayFormComponent implements OnInit {
 
 	ngOnInit() {
 		this.workdayForm = this.createWorkDayForm();
-
-		// Ajout de tâche en dur
-		const taskGroup = this.fb.group({
-			'title': 'Tâche en dur'
-		});
-		this.tasks.push(taskGroup);
 	}
 
 	get dueDate() { return this.workdayForm.get('dueDate'); }
