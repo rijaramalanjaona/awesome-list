@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {FormArray, FormBuilder, FormGroup} from '@angular/forms';
+import {FormArray, FormBuilder, FormGroup, Validators} from '@angular/forms';
 
 @Component({
 	selector: 'al-workday-form-tasks',
@@ -18,14 +18,27 @@ export class WorkdayFormTasksComponent implements OnInit {
 	ngOnInit() {
 	}
 
+	createTaskForm(): FormGroup {
+		return this.fb.group({
+			'title': ['', [
+				Validators.required,
+				Validators.minLength(1),
+				Validators.maxLength(150)
+			]],
+			'todo': [1, [
+				Validators.required,
+				Validators.min(1),
+				Validators.max(5)
+			]],
+			'done': 0
+		});
+	}
 	/**
-	 *  instancie un nouveau FormGroup contenant simplement un titre de tâche vide
-	 *  ensuite, on pousse cette nouvelle tâche vierge dans la liste des tâches du formulaire
+	 *  instancie un nouveau FormGroup
+	 *  ensuite, on pousse cette nouvelle tâche dans la liste des tâches du formulaire
 	 */
 	onAddedTask() {
-		const taskGroup = this.fb.group({
-			'title': ''
-		});
+		const taskGroup = this.createTaskForm();
 		this.tasks.push(taskGroup);
 	}
 
