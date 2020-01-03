@@ -1,15 +1,21 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
+import {FormArray, FormGroup} from '@angular/forms';
 
 @Component({
-  selector: 'al-workday-form-tasks',
-  templateUrl: './workday-form-tasks.component.html',
-  styles: []
+	selector: 'al-workday-form-tasks',
+	templateUrl: './workday-form-tasks.component.html',
+	styles: []
 })
 export class WorkdayFormTasksComponent implements OnInit {
+	@Input()
+	tasks: FormArray;
 
-  constructor() { }
+	@Input()
+	workdayForm: FormGroup;
 
-  ngOnInit() {
-  }
+	constructor() { }
+
+	ngOnInit() {
+	}
 
 }

@@ -13,6 +13,12 @@ export class WorkdayFormComponent implements OnInit {
 
 	ngOnInit() {
 		this.workdayForm = this.createWorkDayForm();
+
+		// Ajout de tâche en dur
+		const taskGroup = this.fb.group({
+			'title': 'Tâche en dur'
+		});
+		this.tasks.push(taskGroup);
 	}
 
 	get dueDate() { return this.workdayForm.get('dueDate'); }
@@ -22,6 +28,10 @@ export class WorkdayFormComponent implements OnInit {
 	createWorkDayForm(): FormGroup {
 		return this.fb.group({
 			dueDate: '',
+			/**
+			 * FormArray permet de regrouper des champs de formulaire sans déterminer à l’avance combien de champs vous attendez en entrée.
+			 * Au contraire, avec un FormGroup, vous devez déclarer chaque champ attendu.
+			 */
 			tasks: this.fb.array([]),
 			notes: ''
 		});
