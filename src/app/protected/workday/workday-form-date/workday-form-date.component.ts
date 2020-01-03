@@ -1,15 +1,18 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
+import {FormControl} from '@angular/forms';
 
 @Component({
-  selector: 'al-workday-form-date',
-  templateUrl: './workday-form-date.component.html',
-  styles: []
+	selector: 'al-workday-form-date',
+	templateUrl: './workday-form-date.component.html',
+	styles: []
 })
 export class WorkdayFormDateComponent implements OnInit {
+	@Input()
+	dueDate: FormControl;
 
-  constructor() { }
+	constructor() { }
 
-  ngOnInit() {
-  }
+	ngOnInit() {
+	}
 
 }
