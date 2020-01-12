@@ -1,13 +1,14 @@
 <div class="container-fluid">
 	<div class="row sidenav">
 		<!-- menu latéral -->
-		<div class="col-md-3 card px-0">
+		<div *ngIf="!isSidenavCollapsed" class="col-md-3 card px-0">
 			<al-sidenav></al-sidenav>
 		</div>
 		<!-- menu latéral -->
 
 		<!-- contenu des pages filles -->
-		<div class="offset-md-1 col-md-7 mt-5">
+		<div class="mt-5"
+			 [ngClass]="{'col-md-7 offset-md-1': !isSidenavCollapsed, 'col-md-9 mx-auto': isSidenavCollapsed}">
 			<router-outlet></router-outlet>
 		</div>
 		<!-- contenu des pages filles -->
