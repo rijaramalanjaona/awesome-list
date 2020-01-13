@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
+import {AuthService} from '../../../core/services/auth.service';
 
 @Component({
 	selector: 'al-register-form',
@@ -11,7 +12,7 @@ export class RegisterFormComponent implements OnInit {
 
 	registerForm: FormGroup;
 
-	constructor(private fb: FormBuilder, private router: Router) { }
+	constructor(private fb: FormBuilder, private router: Router, private authService: AuthService) { }
 
 	ngOnInit() {
 		this.registerForm = this.fb.group({
@@ -46,13 +47,11 @@ export class RegisterFormComponent implements OnInit {
 	}
 
 	submit() {
-		// tslint:disable-next-line:no-console
-		console.info(this.name.value);
-		// tslint:disable-next-line:no-console
-		console.info(this.email.value);
-		// tslint:disable-next-line:no-console
-		console.info(this.password.value);
-		this.router.navigate(['/app/dashboard']);
+		this.authService.register(this.name.value, this.email.value, this.password.value)
+			.subscribe(
+				_ => this.router.navigate(['/app/dashboard']),
+				_ => this.registerForm.reset()
+			);
 	}
 
 }
