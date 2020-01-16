@@ -3,7 +3,7 @@ import {BehaviorSubject, Observable, of} from 'rxjs';
 import {User} from '../../shared/models/user';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {environment} from '../../../environments/environment';
-import {switchMap} from 'rxjs/operators';
+import {switchMap, tap} from 'rxjs/operators';
 import {UsersService} from './users.service';
 
 @Injectable({
@@ -48,7 +48,10 @@ export class AuthService {
 				});
 
 				return this.usersService.save(user, jwt);
-			})
+			}),
+
+			// maj état user
+			tap(user => this.user.next(user))
 		);
 	}
 

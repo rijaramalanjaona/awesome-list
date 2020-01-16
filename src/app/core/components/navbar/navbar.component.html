@@ -1,7 +1,7 @@
 <nav class="navbar navbar-expand navbar-light bg-light">
 
 	<!-- ajout de l'icone hamburger pour ouverture / fermeture du menu latéral -->
-	<a (click)="toggleSidenav()" class="nav-link text-left">
+	<a *ngIf="user" (click)="toggleSidenav()" class="nav-link text-left">
 		<i class="material-icons align-middle">menu</i>
 	</a>
 	<!-- ajout de l'icone hamburger pour ouverture / fermeture du menu latéral -->
