@@ -31,6 +31,25 @@ export class UsersService {
 		);
 	}
 
+	get(userId: string, jwt: string): Observable<User|null> {
+		const url = `${environment.firebase.firestore.baseURL}:runQuery?key=${environment.firebase.apiKey}`;
+
+		const data = this.getStructuredQuery(userId);
+
+		const httpOptions = {
+			headers: new HttpHeaders({
+				'Content-Type': 'application/json',
+				Authorization: `Bearer ${jwt}`
+			})
+		};
+
+		return this.http.post(url, data, httpOptions).pipe(
+			switchMap((responseData: any) => {
+				return of(this.getUserFromFirestore(responseData[0].document.fields));
+			})
+		);
+	}
+
 	// mapping User to Firestore
 	private getDataForFirestore(user: User) {
 		return {
@@ -53,5 +72,24 @@ export class UsersService {
 			avatar: fields.avatar.stringValue,
 			pomodoroDuration: fields.pomodoroDuration.integerValue
 		});
+	}
+
+	// tslint:disable-next-line:ban-types
+	private getStructuredQuery(userId: string): Object {
+		return {
+			structuredQuery: {
+				from: [{
+					collectionId: 'users'
+				}],
+				where: {
+					fieldFilter: {
+						field: { fieldPath: 'id' },
+						op: 'EQUAL',
+						value: { stringValue: userId }
+					}
+				},
+				limit: 1
+			}
+		};
 	}
 }

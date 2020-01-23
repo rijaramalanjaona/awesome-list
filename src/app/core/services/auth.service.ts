@@ -35,10 +35,16 @@ export class AuthService {
 			headers: new HttpHeaders({'Content-Type': 'application/json'})
 		};
 
-		return this.http.post<User>(url, data, httpOptions);
+		return this.http.post<User>(url, data, httpOptions).pipe(
+			switchMap((responseData: any) => {
+				const userId: string = responseData.localId;
+				const jwt: string = responseData.idToken;
+
+				return this.usersService.get(userId, jwt);
+			})
+		);
 		// TODO 2 maj l'état user en fonction de la réponse du backend
 		// TODO 3 maj retourner la réponse du backend sous la forme d'un Observable pour le composant qui déclenche l'action
-
 	}
 
 	public register(name: string, email: string, password: string): Observable<User|null> {
