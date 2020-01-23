@@ -22,7 +22,6 @@ export class AuthService {
 	constructor(private http: HttpClient, private usersService: UsersService, private errorService: ErrorService, private loaderService: LoaderService) { }
 
 	public login(email: string, password: string): Observable<User|null> {
-		// TODO 1 faire un appel au backend
 		const url = `${environment.firebase.auth.baseURL}signInWithPassword?key=${environment.firebase.apiKey}`;
 
 		const data = {
@@ -35,16 +34,25 @@ export class AuthService {
 			headers: new HttpHeaders({'Content-Type': 'application/json'})
 		};
 
+		this.loaderService.setLoading(true);
+
 		return this.http.post<User>(url, data, httpOptions).pipe(
 			switchMap((responseData: any) => {
 				const userId: string = responseData.localId;
 				const jwt: string = responseData.idToken;
 
 				return this.usersService.get(userId, jwt);
-			})
+			}),
+
+			// maj l'état user
+			tap(user => this.user.next(user)),
+
+			// gestion des erreurs
+			catchError(error => this.errorService.handleError(error)),
+
+			// faire patienter les utilisateurs
+			finalize(() => this.loaderService.setLoading(false))
 		);
-		// TODO 2 maj l'état user en fonction de la réponse du backend
-		// TODO 3 maj retourner la réponse du backend sous la forme d'un Observable pour le composant qui déclenche l'action
 	}
 
 	public register(name: string, email: string, password: string): Observable<User|null> {
