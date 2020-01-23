@@ -23,13 +23,26 @@ export class AuthService {
 
 	public login(email: string, password: string): Observable<User|null> {
 		// TODO 1 faire un appel au backend
+		const url = `${environment.firebase.auth.baseURL}signInWithPassword?key=${environment.firebase.apiKey}`;
+
+		const data = {
+			email,
+			password,
+			returnSecureToken: true
+		};
+
+		const httpOptions = {
+			headers: new HttpHeaders({'Content-Type': 'application/json'})
+		};
+
+		return this.http.post<User>(url, data, httpOptions);
 		// TODO 2 maj l'état user en fonction de la réponse du backend
 		// TODO 3 maj retourner la réponse du backend sous la forme d'un Observable pour le composant qui déclenche l'action
-		return of(new User());
+
 	}
 
 	public register(name: string, email: string, password: string): Observable<User|null> {
-		const url = `${environment.firebase.auth.baseURL}accounts:signUp?key=${environment.firebase.apiKey}`;
+		const url = `${environment.firebase.auth.baseURL}signUp?key=${environment.firebase.apiKey}`;
 
 		const data = {
 			email,
