@@ -7,6 +7,7 @@ import {catchError, finalize, switchMap, tap} from 'rxjs/operators';
 import {UsersService} from './users.service';
 import {ErrorService} from './error.service';
 import {LoaderService} from './loader.service';
+import {Router} from '@angular/router';
 
 @Injectable({
 	providedIn: 'root'
@@ -19,7 +20,7 @@ export class AuthService {
 	public readonly user$: Observable<User|null> = this.user.asObservable();
 
 	// tslint:disable-next-line:max-line-length
-	constructor(private http: HttpClient, private usersService: UsersService, private errorService: ErrorService, private loaderService: LoaderService) { }
+	constructor(private http: HttpClient, private usersService: UsersService, private errorService: ErrorService, private loaderService: LoaderService, private router: Router) { }
 
 	public login(email: string, password: string): Observable<User|null> {
 		const url = `${environment.firebase.auth.baseURL}signInWithPassword?key=${environment.firebase.apiKey}`;
@@ -93,8 +94,9 @@ export class AuthService {
 		);
 	}
 
-	public logout(): Observable<null> {
-		return of(null);
+	public logout(): void {
+		this.user.next(null);
+		this.router.navigate(['/login']);
 	}
 
 }

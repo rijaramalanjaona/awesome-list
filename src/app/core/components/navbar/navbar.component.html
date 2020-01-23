@@ -8,7 +8,24 @@
 
 	<div class="container">
 		<a class="navbar-brand">Awesome List</a>
-		<div class="collapse navbar-collapse">
+
+		<!-- user connecté -->
+		<div *ngIf="user" class="collapse navbar-collapse">
+			<ul class="navbar-nav mr-auto">
+				<li class="nav-item">
+					<a class="nav-link">{{user?.email}}</a>
+				</li>
+			</ul>
+			<ul class="navbar-nav ml-auto">
+				<li class="nav-item">
+					<a (click)="logout()" class="nav-link">Déconnexion</a>
+				</li>
+			</ul>
+		</div>
+		<!-- user non connecté -->
+
+		<!-- user non connecté -->
+		<div *ngIf="!user" class="collapse navbar-collapse">
 			<ul class="navbar-nav mr-auto">
 				<li class="nav-item" [class.active]="isActive(homePath)">
 					<a (click)="navigate(homePath)" class="nav-link">Accueil</a>
@@ -23,5 +40,7 @@
 				</li>
 			</ul>
 		</div>
+		<!-- user non connecté -->
+
 	</div>
 </nav>
