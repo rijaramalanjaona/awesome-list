@@ -3,7 +3,7 @@ import {BehaviorSubject, Observable, of} from 'rxjs';
 import {User} from '../../shared/models/user';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {environment} from '../../../environments/environment';
-import {catchError, finalize, switchMap, tap} from 'rxjs/operators';
+import {catchError, delay, finalize, switchMap, tap} from 'rxjs/operators';
 import {UsersService} from './users.service';
 import {ErrorService} from './error.service';
 import {LoaderService} from './loader.service';
@@ -48,6 +48,9 @@ export class AuthService {
 			// maj l'état user
 			tap(user => this.user.next(user)),
 
+			// déconnexion automatique
+			tap(_ => this.logoutTimer(3600)), // on déclenche la minuterie ici
+
 			// gestion des erreurs
 			catchError(error => this.errorService.handleError(error)),
 
@@ -86,6 +89,9 @@ export class AuthService {
 			// maj état user
 			tap(user => this.user.next(user)),
 
+			// déconnexion automatique
+			tap(_ => this.logoutTimer(3600)), // on déclenche la minuterie ici
+
 			// gestion erreurs
 			catchError(error => this.errorService.handleError(error)),
 
@@ -97,6 +103,13 @@ export class AuthService {
 	public logout(): void {
 		this.user.next(null);
 		this.router.navigate(['/login']);
+	}
+
+	// Déclenche la minuterie pour la déconnexion automatique
+	private logoutTimer(expirationTime: number): void {
+		of(true).pipe(
+			delay(expirationTime * 1000)
+		).subscribe(_ => this.logout());
 	}
 
 }
