@@ -42,6 +42,9 @@ export class AuthService {
 				const userId: string = responseData.localId;
 				const jwt: string = responseData.idToken;
 
+				// sauvegarde des infos d'authentification
+				this.saveAuthData(userId, jwt);
+
 				return this.usersService.get(userId, jwt);
 			}),
 
@@ -83,6 +86,9 @@ export class AuthService {
 					name
 				});
 
+				// sauvegarde des infos d'authentification
+				this.saveAuthData(user.id, jwt);
+
 				return this.usersService.save(user, jwt);
 			}),
 
@@ -101,6 +107,9 @@ export class AuthService {
 	}
 
 	public logout(): void {
+		localStorage.removeItem('expirationDate');
+		localStorage.removeItem('token');
+		localStorage.removeItem('userId');
 		this.user.next(null);
 		this.router.navigate(['/login']);
 	}
@@ -112,4 +121,16 @@ export class AuthService {
 		).subscribe(_ => this.logout());
 	}
 
+	private saveAuthData(userId: string, token: string) {
+		const now = new Date();
+		const expirationDate = (now.getTime() + 3600 * 1000).toString();
+		localStorage.setItem('expirationDate', expirationDate);
+		localStorage.setItem('token', token);
+		localStorage.setItem('userId', userId);
+	}
+
+	public autoLogin(user: User) {
+		this.user.next(user);
+		this.router.navigate(['/app/dashboard']);
+	}
 }
