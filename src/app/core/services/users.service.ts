@@ -50,6 +50,27 @@ export class UsersService {
 		);
 	}
 
+	update(user: User): Observable<User|null> {
+		const url = `${environment.firebase.firestore.baseURL}/users/${user.id}?currentDocument.exists=true&key=${environment.firebase.apiKey}`;
+
+		const data = this.getDataForFirestore(user);
+
+		const jwt = localStorage.getItem('token');
+
+		const httpOptions = {
+			headers: new HttpHeaders({
+				'Content-Type': 'application/json',
+				Authorization: `Bearer ${jwt}`
+			})
+		};
+
+		return this.http.patch(url, data, httpOptions).pipe(
+			switchMap((responseData: any) => {
+				return of(this.getUserFromFirestore(responseData.fields));
+			})
+		);
+	}
+
 	// mapping User to Firestore
 	private getDataForFirestore(user: User) {
 		return {
