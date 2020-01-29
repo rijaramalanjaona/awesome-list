@@ -8,6 +8,7 @@ import {UsersService} from './users.service';
 import {ErrorService} from './error.service';
 import {LoaderService} from './loader.service';
 import {Router} from '@angular/router';
+import {ToastrService} from './toastr.service';
 
 @Injectable({
 	providedIn: 'root'
@@ -19,8 +20,13 @@ export class AuthService {
 
 	public readonly user$: Observable<User|null> = this.user.asObservable();
 
-	// tslint:disable-next-line:max-line-length
-	constructor(private http: HttpClient, private usersService: UsersService, private errorService: ErrorService, private loaderService: LoaderService, private router: Router) { }
+	constructor(
+		private http: HttpClient,
+		private usersService: UsersService,
+		private errorService: ErrorService,
+		private loaderService: LoaderService,
+		private toastrService: ToastrService,
+		private router: Router) { }
 
 	public login(email: string, password: string): Observable<User|null> {
 		const url = `${environment.firebase.auth.baseURL}signInWithPassword?key=${environment.firebase.apiKey}`;
@@ -132,5 +138,43 @@ export class AuthService {
 	public autoLogin(user: User) {
 		this.user.next(user);
 		this.router.navigate(['/app/dashboard']);
+	}
+
+	/**
+	 * Enregistrer la modification de la durée des Pomodoros dans le Firestore.
+	 * Une fois que la requête au Firestore a fonctionné, mettre à jour l’état de notre application,
+	 * afin que tout soit synchronisé correctement.
+	 */
+	public updateUserState(user: User): Observable<User|null> {
+		this.loaderService.setLoading(true);
+
+		return this.usersService.update(user).pipe(
+			// MAJ état global de l'application
+			tap(userUpdated => this.user.next(userUpdated)),
+
+			// toastr pour afficher que les infos de l'user sont maj
+			tap(_ => this.toastrService.showToastr({
+					category: 'success',
+					message: 'Vos informations sont mises à jour !'
+				})
+			),
+
+			// gestion erreurs
+			catchError(error => this.errorService.handleError(error)),
+
+			// masquer le loader
+			finalize(() => this.loaderService.setLoading(false))
+		);
+	}
+
+	/**
+	 * permet de renvoyer les dernières informations de l’utilisateur courant
+	 * Contrairement à l’Observable user$ qui est exposé, cette méthode ne renvoie pas les valeurs en continue
+	 * à chaque modification de l’utilisateur.
+	 * Il s’agit d’une capture à l’instant t,
+	 * qui va nous permettre de récupérer facilement la dernière valeur de l’état de l’utilisateur courant
+	 */
+	get currentUser(): User {
+		return this.user.getValue();
 	}
 }
