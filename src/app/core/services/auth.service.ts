@@ -141,7 +141,7 @@ export class AuthService {
 	}
 
 	/**
-	 * Enregistrer la modification de la durée des Pomodoros dans le Firestore.
+	 * Enregistrer la modification des informations sur le user dans le Firestore.
 	 * Une fois que la requête au Firestore a fonctionné, mettre à jour l’état de notre application,
 	 * afin que tout soit synchronisé correctement.
 	 */
