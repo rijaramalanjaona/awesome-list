@@ -19,7 +19,8 @@ import {HttpClientModule} from '@angular/common/http';
 		FooterComponent,
 		PageNotFoundComponent,
 		LoaderComponent,
-		ToastrComponent],
+		ToastrComponent
+	],
 	imports: [
 		CommonModule,
 		HttpClientModule,
@@ -33,7 +34,8 @@ import {HttpClientModule} from '@angular/common/http';
 		FooterComponent,
 		PageNotFoundComponent,
 		LoaderComponent,
-		ToastrComponent]
+		ToastrComponent
+	]
 })
 export class CoreModule {
 	/**

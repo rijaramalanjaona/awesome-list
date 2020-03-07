@@ -18,7 +18,10 @@ export class NavbarComponent implements OnInit, OnDestroy {
 	public loginPath = 'login';
 	public registerPath = 'register';
 
-	constructor(private router: Router, private layoutService: LayoutService, private authService: AuthService) { }
+	constructor(
+		private router: Router,
+		private layoutService: LayoutService,
+		private authService: AuthService) { }
 
 	public isActive(page: string): boolean {
 		return this.router.isActive(page, true);
