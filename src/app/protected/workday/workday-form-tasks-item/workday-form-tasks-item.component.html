@@ -1,8 +1,19 @@
 <div [formGroup]="task" class="form-group row">
+	<!-- titres pour l'importance des tâches -->
+	<legend *ngIf="isFirst">Tâche la plus importante</legend>
+	<legend *ngIf="index === 1">Tâches de seconde importance</legend>
+	<legend *ngIf="index === 3">Tâches additionnelles</legend>
+	<!-- titres pour l'importance des tâches -->
+
+	<!-- numéro de la tâche -->
+	<label class="col-sm-1 col-form-label px-0">{{ index + 1 }}.</label>
+	<!-- numéro de la tâche -->
+
+	<!-- titre de la tâche -->
 	<div class="col-sm-6 px-0">
 		<input formControlName="title" type="text" class="form-control" />
 	</div>
-
+	<!-- titre de la tâche -->
 
 	<div class="col-sm-5">
 		<div class="py-2 mb-0" dropdown>
