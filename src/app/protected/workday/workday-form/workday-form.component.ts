@@ -1,5 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import {FormArray, FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {Router} from '@angular/router';
+import {WorkdaysService} from '../../../core/services/workdays.service';
+import {AuthService} from '../../../core/services/auth.service';
+import {Workday} from '../../../shared/models/workday';
 
 @Component({
 	selector: 'al-workday-form',
@@ -9,7 +13,11 @@ import {FormArray, FormBuilder, FormGroup, Validators} from '@angular/forms';
 export class WorkdayFormComponent implements OnInit {
 	workdayForm: FormGroup;
 
-	constructor(private fb: FormBuilder) { }
+	constructor(
+		private fb: FormBuilder,
+		private router: Router,
+		private workdaysService: WorkdaysService,
+		private authService: AuthService) { }
 
 	ngOnInit() {
 		this.workdayForm = this.createWorkDayForm();
@@ -39,7 +47,16 @@ export class WorkdayFormComponent implements OnInit {
 	}
 
 	submit(): void {
-		// tslint:disable-next-line:no-console
-		console.info(this.workdayForm.value);
+		const userId: string = this.authService.currentUser.id;
+
+		const workday: Workday = new Workday({
+			...{ userId }, // le spread operator ... de ES6 permet de fusionner les propriétés de 2 objets différents
+			...this.workdayForm.value
+		});
+
+		this.workdaysService.save(workday).subscribe(
+			_ => this.router.navigate(['/app/planning']),
+			_ => this.workdayForm.reset()
+		);
 	}
 }
