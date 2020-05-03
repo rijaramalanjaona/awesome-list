@@ -23,4 +23,10 @@ export class WorkdayFormTasksItemComponent implements OnInit {
 		this.removedTask.emit(index);
 	}
 
+	// maj du nombre de pomodoros d'une tâche
+	selectTodo(todo: number) {
+		// patchValue de Angular pour maj seulement certaines propriétés d'un objet vs setValue qui remplace toutes les propriétés
+		this.task.patchValue({ todo });
+	}
+
 }
