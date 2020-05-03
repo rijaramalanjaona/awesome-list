@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {Workday} from '../../shared/models/workday';
-import {environment} from '../../../environments/environment';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Workday } from '../../shared/models/workday';
+import { environment } from '../../../environments/environment';
 import { Task } from 'src/app/shared/models/task';
-import {LoaderService} from './loader.service';
-import {ToastrService} from './toastr.service';
-import {ErrorService} from './error.service';
-import {catchError, finalize, tap} from 'rxjs/operators';
+import { LoaderService } from './loader.service';
+import { ToastrService } from './toastr.service';
+import { ErrorService } from './error.service';
+import { catchError, finalize, tap } from 'rxjs/operators';
 
 @Injectable({
 	providedIn: 'root'
@@ -57,7 +57,7 @@ export class WorkdaysService {
 				dueDate: { integerValue: date },
 				tasks,
 				notes: { stringValue: workday.notes },
-				userId: { stringValue: workday.userId}
+				userId: { stringValue: workday.userId }
 			}
 		};
 	}
@@ -83,7 +83,7 @@ export class WorkdaysService {
 					title: { stringValue: task.title },
 					todo: { integerValue: task.todo },
 					done: { integerValue: task.done },
-					completed: { booleanValue: false}
+					completed: { booleanValue: false }
 				}
 			}
 		};
