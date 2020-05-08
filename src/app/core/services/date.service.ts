@@ -1,0 +1,20 @@
+import { Injectable } from '@angular/core';
+
+@Injectable({
+	providedIn: 'root'
+})
+export class DateService {
+
+	constructor() { }
+
+	/**
+	 * Retourne la date passée en paramètre au format 'dd/mm/YYYY'
+	 */
+	getDisplayDate(date: Date): string {
+		const year: number = date.getFullYear();
+		const month: string = ('0' + (date.getMonth() + 1)).slice(-2);
+		const day: string = ('0' + date.getDate()).slice(-2);
+
+		return `${day}/${month}/${year}`;
+	}
+}
