@@ -6,7 +6,9 @@ import { Task } from 'src/app/shared/models/task';
 import { LoaderService } from './loader.service';
 import { ToastrService } from './toastr.service';
 import { ErrorService } from './error.service';
-import { catchError, finalize, tap } from 'rxjs/operators';
+import {catchError, finalize, switchMap, tap} from 'rxjs/operators';
+import {DateService} from './date.service';
+import {Observable, of} from 'rxjs';
 
 @Injectable({
 	providedIn: 'root'
@@ -15,6 +17,7 @@ export class WorkdaysService {
 
 	constructor(
 		private http: HttpClient,
+		private dateService: DateService,
 		private loaderService: LoaderService,
 		private toastrService: ToastrService,
 		private errorService: ErrorService) { }
@@ -48,13 +51,38 @@ export class WorkdaysService {
 		);
 	}
 
+	getWorkdayByDate(date: string): Observable<Workday|null> {
+		const url = `${environment.firebase.firestore.baseURL}:runQuery?key=${environment.firebase.apiKey}`;
+		const data = this.getStructuredQuery(date);
+		const jwt: string = localStorage.getItem('token');
+
+		const httpOptions = {
+			headers: new HttpHeaders({
+				'Content-Type': 'application/json',
+				Authorization: `Bearer ${jwt}`
+			})
+		};
+
+		return this.http.post(url, data, httpOptions).pipe(
+			switchMap((responseData: any) => {
+				const document = responseData[0].document;
+				if (!document) {
+					return of(null);
+				}
+				return of(this.getWorkdayFromFirestore(document.name, document.fields));
+			})
+		);
+	}
+
 	private getWorkdayForFirestore(workday: Workday) {
-		const date: number = new Date(workday.dueDate).getTime();
+		const date: number = new Date(workday.dueDate).getTime(); // date => dueDate
+		const displayDate: string = this.dateService.getDisplayDate(new Date(workday.dueDate));
 		const tasks = this.getTaskListForFirestore(workday.tasks);
 
 		return {
 			fields: {
 				dueDate: { integerValue: date },
+				displayDate: { stringValue: displayDate },
 				tasks,
 				notes: { stringValue: workday.notes },
 				userId: { stringValue: workday.userId }
@@ -87,5 +115,47 @@ export class WorkdaysService {
 				}
 			}
 		};
+	}
+
+	private getStructuredQuery(date: string): any {
+		return {
+			structuredQuery: {
+				from: [{
+					collectionId: 'workdays'
+				}],
+				where: {
+					fieldFilter: {
+						field: { fieldPath: 'displayDate' },
+						op: 'EQUAL',
+						value: { stringValue: true }
+					}
+				},
+				limit: 1
+			}
+		};
+	}
+
+	private getWorkdayFromFirestore(name, fields): Workday {
+		const tasks: Task[] = [];
+		const workdayId: string = name.split('/')[6];
+
+		fields.tasks.arrayValue.values.forEach(data => {
+			const task: Task = new Task({
+				completed: data.mapValue.fields.completed.booleanValue,
+				done: data.mapValue.fields.done.integerValue,
+				title: data.mapValue.fields.title.stringValue,
+				todo: data.mapValue.fields.title.integerValue
+			});
+			tasks.push(task);
+		});
+
+		return new Workday({
+			id: workdayId,
+			userId: fields.userId.stringValue,
+			notes: fields.notes.stringValue,
+			displayDate: fields.displayDate.stringValue,
+			dueDate: fields.dueDate.integerValue,
+			tasks
+		});
 	}
 }
