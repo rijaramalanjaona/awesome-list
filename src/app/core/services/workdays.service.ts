@@ -127,7 +127,7 @@ export class WorkdaysService {
 					fieldFilter: {
 						field: { fieldPath: 'displayDate' },
 						op: 'EQUAL',
-						value: { stringValue: true }
+						value: { stringValue: date }
 					}
 				},
 				limit: 1
