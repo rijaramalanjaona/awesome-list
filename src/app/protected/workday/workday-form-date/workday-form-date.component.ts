@@ -1,6 +1,7 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {FormControl} from '@angular/forms';
 import {BsLocaleService} from 'ngx-bootstrap';
+import {DateService} from '../../../core/services/date.service';
 
 @Component({
 	selector: 'al-workday-form-date',
@@ -11,10 +12,18 @@ export class WorkdayFormDateComponent implements OnInit {
 	@Input()
 	dueDate: FormControl;
 
-	constructor(private localeService: BsLocaleService) { }
+	@Output()
+	dateSelected = new EventEmitter<string>();
+
+	constructor(private localeService: BsLocaleService, private dateService: DateService) { }
 
 	ngOnInit() {
 		this.localeService.use('fr');
+	}
+
+	selectDate(date: Date): void {
+		const displayDate: string = this.dateService.getDisplayDate(date);
+		this.dateSelected.emit(displayDate);
 	}
 
 }
