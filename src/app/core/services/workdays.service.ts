@@ -46,7 +46,7 @@ export class WorkdaysService {
 			// gestion des erreurs
 			catchError(error => this.errorService.handleError(error)),
 
-			// retire le loader
+			// retirer le loader
 			finalize(() => this.loaderService.setLoading(false))
 		);
 	}
@@ -71,6 +71,37 @@ export class WorkdaysService {
 				}
 				return of(this.getWorkdayFromFirestore(document.name, document.fields));
 			})
+		);
+	}
+
+	update(workday: Workday) {
+		const url = `${environment.firebase.firestore.baseURL}/workdays/${workday.id}?key=${environment.firebase.apiKey}
+		&currentDocument.exists=true`;
+
+		const data = this.getWorkdayForFirestore(workday);
+		const jwt: string = localStorage.getItem('token');
+		const httpOptions = {
+			headers: new HttpHeaders({
+				'Content-Type': 'application/json',
+				Authorization: `Bearer ${jwt}`
+			})
+		};
+
+		// ajout du loader
+		this.loaderService.setLoading(true);
+
+		return this.http.patch(url, data, httpOptions).pipe(
+			// ajout du toastr
+			tap(_ => this.toastrService.showToastr({
+				category: 'success',
+				message: 'Votre journée de travail a été sauvegardée avec succès.'
+			})),
+
+			// gestion des erreurs
+			catchError(error => this.errorService.handleError(error)),
+
+			// retirer le loader
+			finalize(() => this.loaderService.setLoading(false))
 		);
 	}
 
