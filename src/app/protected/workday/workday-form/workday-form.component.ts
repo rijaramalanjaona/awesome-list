@@ -59,4 +59,35 @@ export class WorkdayFormComponent implements OnInit {
 			_ => this.workdayForm.reset()
 		);
 	}
+
+	resetWorkdayForm() {
+		while (this.tasks.length !== 0) {
+			this.tasks.removeAt(0);
+		}
+		this.notes.reset();
+	}
+
+	onDateSelected(displayDate: string) {
+		// Vérifier s'il y a une journée de travail correspondant à displayDate dans Firestore
+		this.workdaysService.getWorkdayByDate(displayDate).subscribe(workday => {
+			// vider le formulaire dans tous les cas
+			this.resetWorkdayForm();
+
+			if (!workday) {
+				return;
+			}
+
+			// remplir le formulaire avec les données du workday venant de Firestore
+			this.notes.setValue(workday.notes);
+
+			workday.tasks.forEach(task => {
+				const taskField: FormGroup = this.fb.group({
+					title: task.title,
+					todo: task.todo,
+					done: task.done
+				});
+				this.tasks.push(taskField);
+			});
+		});
+	}
 }
