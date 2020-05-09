@@ -175,7 +175,7 @@ export class WorkdaysService {
 				completed: data.mapValue.fields.completed.booleanValue,
 				done: data.mapValue.fields.done.integerValue,
 				title: data.mapValue.fields.title.stringValue,
-				todo: data.mapValue.fields.title.integerValue
+				todo: data.mapValue.fields.todo.integerValue
 			});
 			tasks.push(task);
 		});
