@@ -11,6 +11,7 @@ import {Workday} from '../../../shared/models/workday';
 	styles: []
 })
 export class WorkdayFormComponent implements OnInit {
+	workdayId: string;
 	workdayForm: FormGroup;
 
 	constructor(
@@ -20,6 +21,7 @@ export class WorkdayFormComponent implements OnInit {
 		private authService: AuthService) { }
 
 	ngOnInit() {
+		this.workdayId = '';
 		this.workdayForm = this.createWorkDayForm();
 	}
 
@@ -49,15 +51,33 @@ export class WorkdayFormComponent implements OnInit {
 	submit(): void {
 		const userId: string = this.authService.currentUser.id;
 
-		const workday: Workday = new Workday({
-			...{ userId }, // le spread operator ... de ES6 permet de fusionner les propriétés de 2 objets différents
-			...this.workdayForm.value
-		});
+		let workday: Workday;
 
-		this.workdaysService.save(workday).subscribe(
-			_ => this.router.navigate(['/app/planning']),
-			_ => this.workdayForm.reset()
-		);
+		// update
+		if (!!this.workdayId) {
+			workday = new Workday({
+				...{ id: this.workdayId },
+				...this.workdayForm.value,
+				...{ userId }
+			});
+
+			this.workdaysService.update(workday).subscribe(
+				_ => this.router.navigate(['/app/planning']),
+				_ => this.resetWorkdayForm()
+			);
+
+		} else {
+			// create
+			workday = new Workday({
+				...{ userId }, // le spread operator ... de ES6 permet de fusionner les propriétés de 2 objets différents
+				...this.workdayForm.value
+			});
+
+			this.workdaysService.save(workday).subscribe(
+				_ => this.router.navigate(['/app/planning']),
+				_ => this.resetWorkdayForm()
+			);
+		}
 	}
 
 	resetWorkdayForm() {
@@ -76,6 +96,8 @@ export class WorkdayFormComponent implements OnInit {
 			if (!workday) {
 				return;
 			}
+
+			this.workdayId = workday.id;
 
 			// remplir le formulaire avec les données du workday venant de Firestore
 			this.notes.setValue(workday.notes);
