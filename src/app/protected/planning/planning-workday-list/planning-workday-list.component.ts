@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { of } from 'rxjs';
-import { delay } from 'rxjs/operators';
+import {Observable} from 'rxjs';
+import {Workday} from '../../../shared/models/workday';
+import {AuthService} from '../../../core/services/auth.service';
+import {WorkdaysService} from '../../../core/services/workdays.service';
 
 @Component({
 	selector: 'al-planning-workday-list',
@@ -8,24 +10,18 @@ import { delay } from 'rxjs/operators';
 	styles: []
 })
 export class PlanningWorkdayListComponent implements OnInit {
-	public workdays$;
-	public workdays;
 
-	constructor() { }
+	workdays$: Observable<Workday>;
+
+	constructor(private authService: AuthService, private workdayService: WorkdaysService) { }
 
 	ngOnInit() {
-		this.workdays = [
-			{ dueDate: 'Lundi', doneTasks: 1, remainingTasks: 0 },
-			{ dueDate: 'Mardi', doneTasks: 0, remainingTasks: 2 },
-			{ dueDate: 'Mercredi', doneTasks: 0, remainingTasks: 1 }
-		];
-
-		this.workdays$ = of(this.workdays).pipe(delay(1000));
+		const id: string = this.authService.currentUser.id;
+		this.workdays$ = this.workdayService.getWorkdayByUser(id);
 	}
 
 	onWorkdayRemoved(dueDate: string) {
-		// filter avec includes au lieu de === pour prendre en compte Lundi (Aujourd’hui) inclut Lundi
-		this.workdays = this.workdays.filter(workday => !dueDate.includes(workday.dueDate));
-		this.workdays$ = of(this.workdays);
+		// tslint:disable-next-line:no-console
+		console.info(dueDate);
 	}
 }
