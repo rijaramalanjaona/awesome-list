@@ -74,6 +74,32 @@ export class WorkdaysService {
 		);
 	}
 
+	getWorkdayByUser(userId: string): any {
+		const url = `${environment.firebase.firestore.baseURL}:runQuery?key=${environment.firebase.apiKey}`;
+		const data = this.getWorkdayByUserQuery(userId);
+		const jwt: string = localStorage.getItem('token');
+
+		const httpOptions = {
+			headers: new HttpHeaders({
+				'Content-Type': 'application/json',
+				Authorization: `Bearer ${jwt}`
+			})
+		};
+
+		return this.http.post(url, data, httpOptions).pipe(
+			switchMap((responseData: any) => {
+				const workdays: Workday[] = [];
+				responseData.forEach(workdayData => {
+					const workday: Workday = this.getWorkdayFromFirestore(workdayData.document.name, workdayData.document.fields);
+					workdays.push(workday);
+				});
+				return of(workdays);
+			}),
+
+			catchError(error => this.errorService.handleError(error))
+		);
+	}
+
 	update(workday: Workday) {
 		const url = `${environment.firebase.firestore.baseURL}/workdays/${workday.id}?key=${environment.firebase.apiKey}
 		&currentDocument.exists=true`;
@@ -162,6 +188,29 @@ export class WorkdaysService {
 					}
 				},
 				limit: 1
+			}
+		};
+	}
+
+	private getWorkdayByUserQuery(userId: string): any {
+		return {
+			structuredQuery: {
+				from: [{
+					collectionId: 'workdays'
+				}],
+				where: {
+					fieldFilter: {
+						field: { fieldPath: 'userId' },
+						op: 'EQUAL',
+						value: { stringValue: userId }
+					}
+				},
+				orderBy: [{
+					field: {
+						fieldPath: 'dueDate'
+					},
+					direction: 'DESCENDING'
+				}]
 			}
 		};
 	}
