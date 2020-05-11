@@ -21,7 +21,7 @@ export class WorkdayFormDateComponent implements OnInit {
 		this.localeService.use('fr');
 	}
 
-	selectDate(date: Date): void {
+	selectDate(date: Date = new Date()): void {
 		const displayDate: string = this.dateService.getDisplayDate(date);
 		this.dateSelected.emit(displayDate);
 	}
