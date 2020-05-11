@@ -206,9 +206,7 @@ export class WorkdaysService {
 					}
 				},
 				orderBy: [{
-					field: {
-						fieldPath: 'dueDate'
-					},
+					field: { fieldPath: 'dueDate' },
 					direction: 'DESCENDING'
 				}]
 			}
