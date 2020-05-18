@@ -22,6 +22,7 @@ export class WorkdayFormComponent implements OnInit {
 		private activatedRoute: ActivatedRoute) { }
 
 	ngOnInit() {
+		// s'abonner à l'observable queryParams pour récupérer le queryParam date provenant de la page planning
 		this.activatedRoute.queryParams.subscribe(params => {
 			this.workdayId = '';
 			this.workdayForm = this.createWorkDayForm();
