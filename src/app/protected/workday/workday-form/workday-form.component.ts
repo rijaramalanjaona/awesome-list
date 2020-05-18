@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {FormArray, FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {Router} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {WorkdaysService} from '../../../core/services/workdays.service';
 import {AuthService} from '../../../core/services/auth.service';
 import {Workday} from '../../../shared/models/workday';
@@ -18,11 +18,18 @@ export class WorkdayFormComponent implements OnInit {
 		private fb: FormBuilder,
 		private router: Router,
 		private workdaysService: WorkdaysService,
-		private authService: AuthService) { }
+		private authService: AuthService,
+		private activatedRoute: ActivatedRoute) { }
 
 	ngOnInit() {
-		this.workdayId = '';
-		this.workdayForm = this.createWorkDayForm();
+		this.activatedRoute.queryParams.subscribe(params => {
+			this.workdayId = '';
+			this.workdayForm = this.createWorkDayForm();
+			if (params.date) {
+				const date: Date = new Date(+params.date);
+				this.dueDate.setValue(date);
+			}
+		});
 	}
 
 	get dueDate() { return this.workdayForm.get('dueDate'); }
