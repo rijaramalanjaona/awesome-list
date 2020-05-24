@@ -131,6 +131,28 @@ export class WorkdaysService {
 		);
 	}
 
+	remove(workday: Workday) {
+		const url = `${environment.firebase.firestore.baseURL}/workdays/${workday.id}?key=${environment.firebase.apiKey}`;
+		const jwt: string = localStorage.getItem('token');
+		const httpOptions = {
+			headers: new HttpHeaders({
+				'Content-Type': 'application/json',
+				Authorization: `Bearer ${jwt}`
+			})
+		};
+
+		this.loaderService.setLoading(true);
+
+		return this.http.delete(url, httpOptions).pipe(
+			tap(_ => this.toastrService.showToastr({
+				category: 'success',
+				message: 'Votre journée de travail a été supprimé avec succès.'
+			})),
+			catchError(error => this.errorService.handleError(error)),
+			finalize(() => this.loaderService.setLoading(false))
+		);
+	}
+
 	private getWorkdayForFirestore(workday: Workday) {
 		const date: number = new Date(workday.dueDate).getTime(); // date => dueDate
 		const displayDate: string = this.dateService.getDisplayDate(new Date(workday.dueDate));
