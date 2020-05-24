@@ -12,14 +12,14 @@ export class PlanningWorkdayItemComponent implements OnInit {
 	workday: Workday;
 
 	@Output()
-	workdayRemoved = new EventEmitter<string>();
+	workdayRemoved = new EventEmitter<Workday>(); // on émet directement un workday
 
 	constructor(private router: Router) {}
 
 	ngOnInit() {}
 
-	removeWorkday(displayDate: string) {
-		this.workdayRemoved.emit(displayDate);
+	removeWorkday() {
+		this.workdayRemoved.emit(this.workday);
 	}
 
 	/**

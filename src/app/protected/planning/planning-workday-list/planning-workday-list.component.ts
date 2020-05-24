@@ -20,8 +20,11 @@ export class PlanningWorkdayListComponent implements OnInit {
 		this.workdays$ = this.workdayService.getWorkdayByUser(id);
 	}
 
-	onWorkdayRemoved(dueDate: string) {
-		// tslint:disable-next-line:no-console
-		console.info(dueDate);
+	onWorkdayRemoved(workday: Workday) {
+		this.workdayService.remove(workday).subscribe(
+			_ => {
+				console.log(`${workday.id} has been removed from Firestore !`)
+			}
+		);
 	}
 }
