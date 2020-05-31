@@ -90,7 +90,7 @@ export class WorkdaysService {
 			switchMap((responseData: any) => {
 				const workdays: Workday[] = [];
 				responseData.forEach(workdayData => {
-					if (workdayData && workdayData.document) {
+					if (workdayData && workdayData.document) { // fix erreur planning vide
 						const workday: Workday = this.getWorkdayFromFirestore(workdayData.document.name, workdayData.document.fields);
 						workdays.push(workday);
 					}
