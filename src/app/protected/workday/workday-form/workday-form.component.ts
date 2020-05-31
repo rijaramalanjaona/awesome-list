@@ -96,8 +96,9 @@ export class WorkdayFormComponent implements OnInit {
 	}
 
 	onDateSelected(displayDate: string) {
+		const userId: string = this.authService.currentUser.id; // On va récupérer le workday par date pour l'utilisateur courant seulement.
 		// Vérifier s'il y a une journée de travail correspondant à displayDate dans Firestore
-		this.workdaysService.getWorkdayByDate(displayDate).subscribe(workday => {
+		this.workdaysService.getWorkdayByDate(displayDate, userId).subscribe(workday => {
 			// vider le formulaire dans tous les cas
 			this.resetWorkdayForm();
 

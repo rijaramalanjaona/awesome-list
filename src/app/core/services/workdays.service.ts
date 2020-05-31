@@ -51,9 +51,9 @@ export class WorkdaysService {
 		);
 	}
 
-	getWorkdayByDate(date: string): Observable<Workday|null> {
+	getWorkdayByDate(date: string, userId: string): Observable<Workday|null> {
 		const url = `${environment.firebase.firestore.baseURL}:runQuery?key=${environment.firebase.apiKey}`;
-		const data = this.getStructuredQuery(date);
+		const data = this.getStructuredQuery(date, userId);
 		const jwt: string = localStorage.getItem('token');
 
 		const httpOptions = {
@@ -156,13 +156,13 @@ export class WorkdaysService {
 	}
 
 	private getWorkdayForFirestore(workday: Workday): any {
-		const date: number = new Date(workday.dueDate).getTime(); // date => dueDate
+		const dueDate: number = new Date(workday.dueDate).getTime(); // date => dueDate
 		const displayDate: string = this.dateService.getDisplayDate(new Date(workday.dueDate));
 		const tasks = this.getTaskListForFirestore(workday.tasks);
 
 		return {
 			fields: {
-				dueDate: { integerValue: date },
+				dueDate: { integerValue: dueDate },
 				displayDate: { stringValue: displayDate },
 				tasks,
 				notes: { stringValue: workday.notes },
@@ -198,17 +198,31 @@ export class WorkdaysService {
 		};
 	}
 
-	private getStructuredQuery(date: string): any {
+	private getStructuredQuery(date: string, userId: string): any {
 		return {
 			structuredQuery: {
 				from: [{
 					collectionId: 'workdays'
 				}],
 				where: {
-					fieldFilter: {
-						field: { fieldPath: 'displayDate' },
-						op: 'EQUAL',
-						value: { stringValue: date }
+					compositeFilter: {
+						op: 'AND',
+						filters: [
+							{
+								fieldFilter: {
+									field: { fieldPath: 'displayDate' },
+									op: 'EQUAL',
+									value: { stringValue: date }
+								}
+							},
+							{
+								fieldFilter: {
+									field: { fieldPath: 'userId' },
+									op: 'EQUAL',
+									value: { stringValue: userId }
+								}
+							}
+						]
 					}
 				},
 				limit: 1
