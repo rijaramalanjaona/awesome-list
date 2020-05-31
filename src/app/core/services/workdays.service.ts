@@ -155,7 +155,7 @@ export class WorkdaysService {
 		);
 	}
 
-	private getWorkdayForFirestore(workday: Workday) {
+	private getWorkdayForFirestore(workday: Workday): any {
 		const date: number = new Date(workday.dueDate).getTime(); // date => dueDate
 		const displayDate: string = this.dateService.getDisplayDate(new Date(workday.dueDate));
 		const tasks = this.getTaskListForFirestore(workday.tasks);
@@ -171,7 +171,7 @@ export class WorkdaysService {
 		};
 	}
 
-	private getTaskListForFirestore(tasks: Task[]) {
+	private getTaskListForFirestore(tasks: Task[]): any {
 		const taskList = {
 			arrayValue: {
 				values: []
@@ -185,7 +185,7 @@ export class WorkdaysService {
 		return taskList;
 	}
 
-	private getTaskForFirestore(task: Task) {
+	private getTaskForFirestore(task: Task): any {
 		return {
 			mapValue: {
 				fields: {
