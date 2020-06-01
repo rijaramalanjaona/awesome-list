@@ -37,13 +37,9 @@ export class AuthService {
 			returnSecureToken: true
 		};
 
-		const httpOptions = {
-			headers: new HttpHeaders({'Content-Type': 'application/json'})
-		};
-
 		this.loaderService.setLoading(true);
 
-		return this.http.post<User>(url, data, httpOptions).pipe(
+		return this.http.post<User>(url, data, {}).pipe(
 			switchMap((responseData: any) => {
 				const userId: string = responseData.localId;
 				const jwt: string = responseData.idToken;
@@ -77,13 +73,9 @@ export class AuthService {
 			returnSecureToken: true
 		};
 
-		const httpOptions = {
-			headers: new HttpHeaders({'Content-Type': 'application/json'})
-		};
-
 		this.loaderService.setLoading(true);
 
-		return this.http.post(url, data, httpOptions).pipe(
+		return this.http.post(url, data, {}).pipe(
 			switchMap((responseData: any) => {
 				const jwt: string = responseData.idToken;
 				const user = new User({

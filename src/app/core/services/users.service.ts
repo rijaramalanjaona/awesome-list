@@ -19,7 +19,6 @@ export class UsersService {
 
 		const httpOptions = {
 			headers: new HttpHeaders({
-				'Content-Type': 'application/json',
 				Authorization: `Bearer ${jwt}`
 			})
 		};
@@ -38,7 +37,6 @@ export class UsersService {
 
 		const httpOptions = {
 			headers: new HttpHeaders({
-				'Content-Type': 'application/json',
 				Authorization: `Bearer ${jwt}`
 			})
 		};
@@ -59,7 +57,6 @@ export class UsersService {
 
 		const httpOptions = {
 			headers: new HttpHeaders({
-				'Content-Type': 'application/json',
 				Authorization: `Bearer ${jwt}`
 			})
 		};
