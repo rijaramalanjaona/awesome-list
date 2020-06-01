@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {HttpClient} from '@angular/common/http';
 import {User} from '../../shared/models/user';
 import {Observable, of} from 'rxjs';
 import {environment} from '../../../environments/environment';
@@ -12,36 +12,24 @@ export class UsersService {
 
 	constructor(private http: HttpClient) { }
 
-	save(user: User, jwt: string): Observable<User|null> {
+	save(user: User): Observable<User|null> {
 		const url = `${environment.firebase.firestore.baseURL}/users?key=${environment.firebase.apiKey}&documentId=${user.id}`;
 
 		const data = this.getDataForFirestore(user);
 
-		const httpOptions = {
-			headers: new HttpHeaders({
-				Authorization: `Bearer ${jwt}`
-			})
-		};
-
-		return this.http.post(url, data, httpOptions).pipe(
+		return this.http.post(url, data, {}).pipe(
 			switchMap((responseData: any) => {
 				return of(this.getUserFromFirestore(responseData.fields));
 			})
 		);
 	}
 
-	get(userId: string, jwt: string): Observable<User|null> {
+	get(userId: string): Observable<User|null> {
 		const url = `${environment.firebase.firestore.baseURL}:runQuery?key=${environment.firebase.apiKey}`;
 
 		const data = this.getStructuredQuery(userId);
 
-		const httpOptions = {
-			headers: new HttpHeaders({
-				Authorization: `Bearer ${jwt}`
-			})
-		};
-
-		return this.http.post(url, data, httpOptions).pipe(
+		return this.http.post(url, data, {}).pipe(
 			switchMap((responseData: any) => {
 				return of(this.getUserFromFirestore(responseData[0].document.fields));
 			})
@@ -53,15 +41,7 @@ export class UsersService {
 
 		const data = this.getDataForFirestore(user);
 
-		const jwt = localStorage.getItem('token');
-
-		const httpOptions = {
-			headers: new HttpHeaders({
-				Authorization: `Bearer ${jwt}`
-			})
-		};
-
-		return this.http.patch(url, data, httpOptions).pipe(
+		return this.http.patch(url, data, {}).pipe(
 			switchMap((responseData: any) => {
 				return of(this.getUserFromFirestore(responseData.fields));
 			})

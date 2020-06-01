@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Workday } from '../../shared/models/workday';
 import { environment } from '../../../environments/environment';
 import { Task } from 'src/app/shared/models/task';
@@ -25,17 +25,11 @@ export class WorkdaysService {
 	save(workday: Workday) {
 		const url = `${environment.firebase.firestore.baseURL}/workdays?key=${environment.firebase.apiKey}`;
 		const data = this.getWorkdayForFirestore(workday);
-		const jwt: string = localStorage.getItem('token');
-		const httpOptions = {
-			headers: new HttpHeaders({
-				Authorization: `Bearer ${jwt}`
-			})
-		};
 
 		// ajout du loader
 		this.loaderService.setLoading(true);
 
-		return this.http.post(url, data, httpOptions).pipe(
+		return this.http.post(url, data, {}).pipe(
 			// ajout du toastr
 			tap(_ => this.toastrService.showToastr({
 				category: 'success',
@@ -53,15 +47,8 @@ export class WorkdaysService {
 	getWorkdayByDate(date: string, userId: string): Observable<Workday|null> {
 		const url = `${environment.firebase.firestore.baseURL}:runQuery?key=${environment.firebase.apiKey}`;
 		const data = this.getStructuredQuery(date, userId);
-		const jwt: string = localStorage.getItem('token');
 
-		const httpOptions = {
-			headers: new HttpHeaders({
-				Authorization: `Bearer ${jwt}`
-			})
-		};
-
-		return this.http.post(url, data, httpOptions).pipe(
+		return this.http.post(url, data, {}).pipe(
 			switchMap((responseData: any) => {
 				const document = responseData[0].document;
 				if (!document) {
@@ -75,15 +62,8 @@ export class WorkdaysService {
 	getWorkdayByUser(userId: string): any {
 		const url = `${environment.firebase.firestore.baseURL}:runQuery?key=${environment.firebase.apiKey}`;
 		const data = this.getWorkdayByUserQuery(userId);
-		const jwt: string = localStorage.getItem('token');
 
-		const httpOptions = {
-			headers: new HttpHeaders({
-				Authorization: `Bearer ${jwt}`
-			})
-		};
-
-		return this.http.post(url, data, httpOptions).pipe(
+		return this.http.post(url, data, {}).pipe(
 			switchMap((responseData: any) => {
 				const workdays: Workday[] = [];
 				responseData.forEach(workdayData => {
@@ -104,17 +84,11 @@ export class WorkdaysService {
 		&currentDocument.exists=true`;
 
 		const data = this.getWorkdayForFirestore(workday);
-		const jwt: string = localStorage.getItem('token');
-		const httpOptions = {
-			headers: new HttpHeaders({
-				Authorization: `Bearer ${jwt}`
-			})
-		};
 
 		// ajout du loader
 		this.loaderService.setLoading(true);
 
-		return this.http.patch(url, data, httpOptions).pipe(
+		return this.http.patch(url, data, {}).pipe(
 			// ajout du toastr
 			tap(_ => this.toastrService.showToastr({
 				category: 'success',
@@ -131,16 +105,10 @@ export class WorkdaysService {
 
 	remove(workday: Workday) {
 		const url = `${environment.firebase.firestore.baseURL}/workdays/${workday.id}?key=${environment.firebase.apiKey}`;
-		const jwt: string = localStorage.getItem('token');
-		const httpOptions = {
-			headers: new HttpHeaders({
-				Authorization: `Bearer ${jwt}`
-			})
-		};
 
 		this.loaderService.setLoading(true);
 
-		return this.http.delete(url, httpOptions).pipe(
+		return this.http.delete(url, {}).pipe(
 			tap(_ => this.toastrService.showToastr({
 				category: 'success',
 				message: 'Votre journée de travail a été supprimé avec succès.'
