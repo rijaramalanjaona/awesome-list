@@ -1,8 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {AlertModule, BsDatepickerModule, BsDropdownModule, ModalModule, PopoverModule} from 'ngx-bootstrap';
-
-
+import {AlertModule, BsDatepickerModule, BsDropdownModule, ModalModule, PopoverModule, ProgressbarModule} from 'ngx-bootstrap';
 
 @NgModule({
 	declarations: [],
@@ -12,14 +10,16 @@ import {AlertModule, BsDatepickerModule, BsDropdownModule, ModalModule, PopoverM
 		BsDatepickerModule.forRoot(),
 		BsDropdownModule.forRoot(),
 		ModalModule.forRoot(),
-		PopoverModule.forRoot()
+		PopoverModule.forRoot(),
+		ProgressbarModule.forRoot()
 	],
 	exports: [
 		AlertModule,
 		BsDatepickerModule,
 		BsDropdownModule,
 		ModalModule,
-		PopoverModule
+		PopoverModule,
+		ProgressbarModule
 	]
 })
 export class NgxBootstrapModule { }
