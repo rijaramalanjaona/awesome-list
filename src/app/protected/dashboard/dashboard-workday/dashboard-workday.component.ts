@@ -17,4 +17,16 @@ export class DashboardWorkdayComponent implements OnInit {
 	ngOnInit(): void {
 		this.isPomodoroActive = false;
 	}
+
+	startPomodoro() {
+		this.isPomodoroActive = true;
+	}
+
+	cancelPomodoro() {
+		this.isPomodoroActive = false;
+	}
+
+	completePomodoro() {
+		this.isPomodoroActive = false;
+	}
 }

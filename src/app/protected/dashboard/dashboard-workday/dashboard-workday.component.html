@@ -2,16 +2,16 @@
 
 <!-- boutons Démarrer - Annuler - Terminer -->
 <div *ngIf="!isPomodoroActive" class="text-center my-3">
-	<button class="btn btn-success btn-sm">
+	<button (click)="startPomodoro()" class="btn btn-success btn-sm">
 		Démarrer le Pomodoro
 	</button>
 </div>
 
 <div *ngIf="isPomodoroActive" class="text-center my-3">
-	<button class="btn btn-sm mr-1">
+	<button (click)="cancelPomodoro()" class="btn btn-sm mr-1">
 		Annuler le Pomodoro
 	</button>
-	<button class="btn btn-success btn-sm">
+	<button (click)="completePomodoro()" class="btn btn-success btn-sm">
 		Terminer le Pomodoro
 	</button>
 </div>
