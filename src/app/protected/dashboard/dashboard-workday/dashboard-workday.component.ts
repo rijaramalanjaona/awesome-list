@@ -9,7 +9,7 @@ import {AuthService} from '../../../core/services/auth.service';
 @Component({
 	selector: 'al-dashboard-workday',
 	templateUrl: './dashboard-workday.component.html',
-	styleUrls: ['./dashboard-workday.component.scss']
+	styleUrls: []
 })
 export class DashboardWorkdayComponent implements OnInit {
 	@Input()
