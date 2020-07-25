@@ -2,6 +2,8 @@ import {Component, Input, OnInit} from '@angular/core';
 import {Workday} from '../../../shared/models/workday';
 import {interval, Observable, of, Subject} from 'rxjs';
 import {delay, map, takeUntil, takeWhile} from 'rxjs/operators';
+import { Task } from 'src/app/shared/models/task';
+import {WorkdaysService} from '../../../core/services/workdays.service';
 
 @Component({
 	selector: 'al-dashboard-workday',
@@ -11,6 +13,8 @@ import {delay, map, takeUntil, takeWhile} from 'rxjs/operators';
 export class DashboardWorkdayComponent implements OnInit {
 	@Input()
 	workday: Workday;
+
+	isWorkdayComplete: boolean;
 
 	isPomodoroActive: boolean;
 
@@ -25,10 +29,12 @@ export class DashboardWorkdayComponent implements OnInit {
 	// flux correspondant au temps qui s'écoule => Observable, émettre le nb de secondes écoulées depuis le démarrage du pomodoro
 	pomodoro$: Observable<number>;
 
-	constructor() {}
+	constructor(private workdaysService: WorkdaysService) {}
 
 	ngOnInit(): void {
 		this.isPomodoroActive = false;
+
+		this.isWorkdayComplete = (this.currentTask === undefined);
 
 		this.startPomodoro$ = new Subject<string>();
 		this.cancelPomodoro$ = new Subject<string>();
@@ -47,6 +53,11 @@ export class DashboardWorkdayComponent implements OnInit {
 
 			map(x => x + 1)
 		);
+	}
+
+	// Récupérer la tâche courante
+	get currentTask(): Task|undefined {
+		return this.workday.tasks.find((task: Task) => task.todo > task.done);
 	}
 
 	startPomodoro() {
@@ -82,5 +93,14 @@ export class DashboardWorkdayComponent implements OnInit {
 
 		// désabonnement au flux pomodoro$
 		this.completePomodoro$.next('complete');
+
+		// Incrémenter le nombre de pomodoros terminés pour la tâche courante
+		this.currentTask.done++;
+
+		// Vérifier si la journée de travail est terminée
+		this.isWorkdayComplete = (this.currentTask === undefined);
+
+		// MAJ backend
+		this.workdaysService.update(this.workday).subscribe();
 	}
 }

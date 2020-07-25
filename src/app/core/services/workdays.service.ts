@@ -119,6 +119,12 @@ export class WorkdaysService {
 	}
 
 	private getWorkdayForFirestore(workday: Workday): any {
+		// Fix erreur 400 lors maj via dashboard qui envoie dueDate null et displayDate "aN/aN/NaN"
+		// workday.dueDate est de type string dans le retour de firestore
+		if (typeof workday.dueDate === 'string') {
+			workday.dueDate = +workday.dueDate;
+		}
+
 		const dueDate: number = new Date(workday.dueDate).getTime(); // date => dueDate
 		const displayDate: string = this.dateService.getDisplayDate(new Date(workday.dueDate));
 		const tasks = this.getTaskListForFirestore(workday.tasks);
