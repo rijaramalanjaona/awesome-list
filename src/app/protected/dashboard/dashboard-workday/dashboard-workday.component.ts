@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {Workday} from '../../../shared/models/workday';
 
 @Component({
@@ -6,7 +6,15 @@ import {Workday} from '../../../shared/models/workday';
 	templateUrl: './dashboard-workday.component.html',
 	styleUrls: ['./dashboard-workday.component.scss']
 })
-export class DashboardWorkdayComponent {
+export class DashboardWorkdayComponent implements OnInit {
 	@Input()
 	workday: Workday;
+
+	isPomodoroActive: boolean;
+
+	constructor() {}
+
+	ngOnInit(): void {
+		this.isPomodoroActive = false;
+	}
 }
