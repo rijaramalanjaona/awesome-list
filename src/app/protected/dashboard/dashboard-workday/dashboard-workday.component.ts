@@ -1,7 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {Workday} from '../../../shared/models/workday';
 import {interval, Observable, Subject} from 'rxjs';
-import {map} from 'rxjs/operators';
+import {map, takeUntil} from 'rxjs/operators';
 
 @Component({
 	selector: 'al-dashboard-workday',
@@ -38,19 +38,37 @@ export class DashboardWorkdayComponent implements OnInit {
 		this.maxProgress = 5;
 
 		this.pomodoro$ = interval(1000).pipe(
+			// désabonnement au flux grace à l'opérateur takeUntil
+			takeUntil(this.cancelPomodoro$),
+			takeUntil(this.completePomodoro$),
+
 			map(x => x + 1)
 		);
 	}
 
 	startPomodoro() {
 		this.isPomodoroActive = true;
+
+		// émettre des valeurs dans les Subject avec .next (on peut mettre n'importe quelle valeur)
+		this.startPomodoro$.next('start');
+
+		// abonnement au flux pomodoro$
+		this.pomodoro$.subscribe(currentProgress => {
+			this.currentProgress = currentProgress; // this.currentProgress s'actualise toutes les secondes
+		});
 	}
 
 	cancelPomodoro() {
 		this.isPomodoroActive = false;
+
+		// désabonnement au flux pomodoro$
+		this.cancelPomodoro$.next('cancel');
 	}
 
 	completePomodoro() {
 		this.isPomodoroActive = false;
+
+		// désabonnement au flux pomodoro$
+		this.completePomodoro$.next('complete');
 	}
 }
