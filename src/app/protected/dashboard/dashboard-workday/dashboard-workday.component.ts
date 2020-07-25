@@ -1,7 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {Workday} from '../../../shared/models/workday';
-import {interval, Observable, Subject} from 'rxjs';
-import {map, takeUntil} from 'rxjs/operators';
+import {interval, Observable, of, Subject} from 'rxjs';
+import {delay, map, takeUntil, takeWhile} from 'rxjs/operators';
 
 @Component({
 	selector: 'al-dashboard-workday',
@@ -42,6 +42,9 @@ export class DashboardWorkdayComponent implements OnInit {
 			takeUntil(this.cancelPomodoro$),
 			takeUntil(this.completePomodoro$),
 
+			// désabonnement au flux grace à l'opérateur takeWhile qui prend en param une simple condition
+			takeWhile(progress => progress <= this.maxProgress),
+
 			map(x => x + 1)
 		);
 	}
@@ -55,6 +58,15 @@ export class DashboardWorkdayComponent implements OnInit {
 		// abonnement au flux pomodoro$
 		this.pomodoro$.subscribe(currentProgress => {
 			this.currentProgress = currentProgress; // this.currentProgress s'actualise toutes les secondes
+
+			// détecter la fin d'un pomodoro
+			if (currentProgress === this.maxProgress) {
+				of(0).pipe(
+					delay(500) // on attend 500 ms
+				).subscribe(
+					_ => this.completePomodoro()
+				);
+			}
 		});
 	}
 
