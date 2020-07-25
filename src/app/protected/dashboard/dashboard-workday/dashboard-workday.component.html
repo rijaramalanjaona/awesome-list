@@ -1,4 +1,8 @@
-<al-dashboard-pomodoro-progress></al-dashboard-pomodoro-progress>
+<al-dashboard-pomodoro-progress
+	*ngIf="isPomodoroActive"
+	[progress]="currentProgress"
+	[maxProgress]="maxProgress">
+</al-dashboard-pomodoro-progress>
 
 <!-- boutons Démarrer - Annuler - Terminer -->
 <div *ngIf="!isPomodoroActive" class="text-center my-3">
