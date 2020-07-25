@@ -4,6 +4,7 @@ import {interval, Observable, of, Subject} from 'rxjs';
 import {delay, map, takeUntil, takeWhile} from 'rxjs/operators';
 import { Task } from 'src/app/shared/models/task';
 import {WorkdaysService} from '../../../core/services/workdays.service';
+import {AuthService} from '../../../core/services/auth.service';
 
 @Component({
 	selector: 'al-dashboard-workday',
@@ -29,7 +30,7 @@ export class DashboardWorkdayComponent implements OnInit {
 	// flux correspondant au temps qui s'écoule => Observable, émettre le nb de secondes écoulées depuis le démarrage du pomodoro
 	pomodoro$: Observable<number>;
 
-	constructor(private workdaysService: WorkdaysService) {}
+	constructor(private workdaysService: WorkdaysService, private authService: AuthService) {}
 
 	ngOnInit(): void {
 		this.isPomodoroActive = false;
@@ -41,7 +42,8 @@ export class DashboardWorkdayComponent implements OnInit {
 		this.completePomodoro$ = new Subject<string>();
 
 		this.currentProgress = 0;
-		this.maxProgress = 5;
+		// this.maxProgress = 5; pour faire des tests rapides pomodoro d'une durée de 5s
+		this.maxProgress = this.authService.currentUser.pomodoroDuration;
 
 		this.pomodoro$ = interval(1000).pipe(
 			// désabonnement au flux grace à l'opérateur takeUntil
