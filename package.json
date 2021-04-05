@@ -22,7 +22,7 @@
     "bootstrap": "^4.2.1",
     "bootswatch": "^4.2.1",
     "ngx-bootstrap": "^5.1.1",
-    "rxjs": "~6.5.5",
+    "rxjs": "~6.6.7",
     "tslib": "^2.0.0",
     "zone.js": "~0.10.2"
   },
