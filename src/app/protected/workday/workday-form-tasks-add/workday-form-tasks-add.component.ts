@@ -5,14 +5,11 @@ import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 	templateUrl: './workday-form-tasks-add.component.html',
 	styles: []
 })
-export class WorkdayFormTasksAddComponent implements OnInit {
+export class WorkdayFormTasksAddComponent {
 	@Output()
 	addedTask = new EventEmitter<void>();
 
 	constructor() { }
-
-	ngOnInit() {
-	}
 
 	addTask() {
 		this.addedTask.emit();

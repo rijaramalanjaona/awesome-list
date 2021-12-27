@@ -7,7 +7,7 @@ import {Router} from '@angular/router';
 	templateUrl: './planning-workday-item.component.html',
 	styles: []
 })
-export class PlanningWorkdayItemComponent implements OnInit {
+export class PlanningWorkdayItemComponent {
 	@Input()
 	workday: Workday;
 
@@ -15,8 +15,6 @@ export class PlanningWorkdayItemComponent implements OnInit {
 	workdayRemoved = new EventEmitter<Workday>(); // on émet directement un workday
 
 	constructor(private router: Router) {}
-
-	ngOnInit() {}
 
 	removeWorkday() {
 		this.workdayRemoved.emit(this.workday);

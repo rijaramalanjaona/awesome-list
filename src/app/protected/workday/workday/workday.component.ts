@@ -5,11 +5,8 @@ import { Component, OnInit } from '@angular/core';
   templateUrl: './workday.component.html',
   styles: []
 })
-export class WorkdayComponent implements OnInit {
+export class WorkdayComponent {
 
   constructor() { }
-
-  ngOnInit() {
-  }
 
 }

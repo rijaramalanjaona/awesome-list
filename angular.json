@@ -111,9 +111,21 @@
               "devServerTarget": "awesome-list:serve:production"
             }
           }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": [
+              "src/**/*.ts",
+              "src/**/*.html"
+            ]
+          }
         }
       }
     }
   },
-  "defaultProject": "awesome-list"
+  "defaultProject": "awesome-list",
+  "cli": {
+    "defaultCollection": "@angular-eslint/schematics"
+  }
 }

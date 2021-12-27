@@ -5,14 +5,11 @@ import {Component, Input, OnInit} from '@angular/core';
 	templateUrl: './home-feature-card.component.html',
 	styles: []
 })
-export class HomeFeatureCardComponent implements OnInit {
+export class HomeFeatureCardComponent {
 	@Input() description: string;
 	@Input() icon: string;
 	@Input() title: string;
 
 	constructor() { }
-
-	ngOnInit() {
-	}
 
 }

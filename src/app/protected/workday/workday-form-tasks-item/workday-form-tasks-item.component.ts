@@ -6,7 +6,7 @@ import {FormGroup} from '@angular/forms';
 	templateUrl: './workday-form-tasks-item.component.html',
 	styleUrls: ['./workday-form-tasks-item.component.scss']
 })
-export class WorkdayFormTasksItemComponent implements OnInit {
+export class WorkdayFormTasksItemComponent {
 	@Input() task: FormGroup;
 	@Input() index: number;
 	@Input() isFirst: boolean;
@@ -15,9 +15,6 @@ export class WorkdayFormTasksItemComponent implements OnInit {
 	@Output() removedTask = new EventEmitter<number>();
 
 	constructor() { }
-
-	ngOnInit() {
-	}
 
 	removeTask(index: number) {
 		this.removedTask.emit(index);

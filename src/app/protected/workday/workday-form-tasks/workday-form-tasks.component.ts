@@ -6,7 +6,7 @@ import {FormArray, FormBuilder, FormGroup, Validators} from '@angular/forms';
 	templateUrl: './workday-form-tasks.component.html',
 	styles: []
 })
-export class WorkdayFormTasksComponent implements OnInit {
+export class WorkdayFormTasksComponent {
 	@Input()
 	tasks: FormArray;
 
@@ -14,9 +14,6 @@ export class WorkdayFormTasksComponent implements OnInit {
 	workdayForm: FormGroup;
 
 	constructor(private fb: FormBuilder) { }
-
-	ngOnInit() {
-	}
 
 	createTaskForm(): FormGroup {
 		return this.fb.group({

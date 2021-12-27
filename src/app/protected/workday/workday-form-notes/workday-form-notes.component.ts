@@ -6,13 +6,10 @@ import {FormControl} from '@angular/forms';
 	templateUrl: './workday-form-notes.component.html',
 	styles: []
 })
-export class WorkdayFormNotesComponent implements OnInit {
+export class WorkdayFormNotesComponent {
 	@Input()
 	notes: FormControl;
 
 	constructor() { }
-
-	ngOnInit() {
-	}
 
 }
