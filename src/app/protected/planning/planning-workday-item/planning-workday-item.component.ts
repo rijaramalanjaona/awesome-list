@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {Workday} from '../../../shared/models/workday';
 import {Router} from '@angular/router';
 
@@ -14,7 +14,8 @@ export class PlanningWorkdayItemComponent {
 	@Output()
 	workdayRemoved = new EventEmitter<Workday>(); // on émet directement un workday
 
-	constructor(private router: Router) {}
+	constructor(private router: Router) {
+	}
 
 	removeWorkday() {
 		this.workdayRemoved.emit(this.workday);

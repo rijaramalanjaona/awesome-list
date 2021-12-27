@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {FormGroup} from '@angular/forms';
 
 @Component({
@@ -14,7 +14,8 @@ export class WorkdayFormTasksItemComponent {
 
 	@Output() removedTask = new EventEmitter<number>();
 
-	constructor() { }
+	constructor() {
+	}
 
 	removeTask(index: number) {
 		this.removedTask.emit(index);
@@ -23,7 +24,7 @@ export class WorkdayFormTasksItemComponent {
 	// maj du nombre de pomodoros d'une tâche
 	selectTodo(todo: number) {
 		// patchValue de Angular pour maj seulement certaines propriétés d'un objet vs setValue qui remplace toutes les propriétés
-		this.task.patchValue({ todo });
+		this.task.patchValue({todo});
 	}
 
 }

@@ -1,12 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import {Component} from '@angular/core';
 
 @Component({
-  selector: 'al-register',
-  templateUrl: './register.component.html',
-  styles: []
+	selector: 'al-register',
+	templateUrl: './register.component.html',
+	styles: []
 })
 export class RegisterComponent {
 
-  constructor() { }
+	constructor() {
+	}
 
 }

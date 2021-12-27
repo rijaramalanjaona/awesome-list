@@ -1,12 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import {Component} from '@angular/core';
 
 @Component({
-  selector: 'al-home',
-  templateUrl: './home.component.html',
-  styles: []
+	selector: 'al-home',
+	templateUrl: './home.component.html',
+	styles: []
 })
 export class HomeComponent {
 
-  constructor() { }
+	constructor() {
+	}
 
 }

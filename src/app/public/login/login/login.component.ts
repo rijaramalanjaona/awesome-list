@@ -1,12 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import {Component} from '@angular/core';
 
 @Component({
-  selector: 'al-login',
-  templateUrl: './login.component.html',
-  styles: []
+	selector: 'al-login',
+	templateUrl: './login.component.html',
+	styles: []
 })
 export class LoginComponent {
 
-  constructor() { }
+	constructor() {
+	}
 
 }

@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input} from '@angular/core';
 
 @Component({
 	selector: 'al-home-feature-card',
@@ -10,6 +10,7 @@ export class HomeFeatureCardComponent {
 	@Input() icon: string;
 	@Input() title: string;
 
-	constructor() { }
+	constructor() {
+	}
 
 }

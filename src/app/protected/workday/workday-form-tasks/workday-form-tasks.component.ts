@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {FormArray, FormBuilder, FormGroup, Validators} from '@angular/forms';
 
 @Component({
@@ -13,7 +13,8 @@ export class WorkdayFormTasksComponent {
 	@Input()
 	workdayForm: FormGroup;
 
-	constructor(private fb: FormBuilder) { }
+	constructor(private fb: FormBuilder) {
+	}
 
 	createTaskForm(): FormGroup {
 		return this.fb.group({
@@ -30,6 +31,7 @@ export class WorkdayFormTasksComponent {
 			done: 0
 		});
 	}
+
 	/**
 	 *  instancie un nouveau FormGroup
 	 *  ensuite, on pousse cette nouvelle tâche dans la liste des tâches du formulaire
